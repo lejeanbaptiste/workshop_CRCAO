@@ -1,16 +1,10 @@
 # 0. À préparer en amont
 
-1. **Textes :** veuillez repérer 2-5 transcriptions du type qui vous intéresse d'analyser, dont au moins une qui contient pas mal de noms propres (gens, toponymes, bureaux, titres d'ouvrage, ou bien des dates chinoises/japonaises).
-2. **Questions :** notez quelques questions et objectifs liés à ce genre de texte qui vous semble pertinents, par ex. « Je vous faire une base de données qui permet de regrouper ... et trier ... », « J'aimerais bien reconstituer les lignées de transmission entre maîtres et disciples à travers des petites notices dispersées » ... 
-3. Si vous en avez, une « liste de mots » d'une catégorie précise, par exemple, une liste de noms de personne, de toponymes, d'objets rituels...
-
-4. **Éditeur XML :** il n'y a pas d'éditeur parfait, donc j'en ai pris un qui est pas mal et je l'ai amélioré selon ma propre vision de nos besoins. Veuillez l'installer en suivant les instructions pour votre système d'exploitation ici. 
-	1. **Plan B :** [XMLmind](https://www.xmlmind.com/products_fr.html), au cas où le mien bogue...
-5. **Éditeur de texte brut avec expressions régulières :** gedit (Linux), [Notepad++](https://notepad-plus-plus.org/) (Windows), CotEditor (macOS)
-
-6. Un compte [GitHub](https://github.com/); 
-	1. on va te demander la 2FA, donc télécharge aussi l'appli Android/iOS sur ton téléphone et t'y connecte. 
-7. **Clé API, service IA :** créez un compte gratuit chez [Groq](https://console.groq.com/) (≠ Groc), puis ouvre le truc dans le coin droit supérieur, créez une clé API, la notez, et l'entrez dans le panneau de configuration de l'éditeur XML et cliquez `Connect`:
+1. **Textes :** Veuillez repérer 2-5 transcriptions du type qui vous intéresse d'analyser, dont au moins une qui contient pas mal de noms propres (gens, toponymes, bureaux, titres d'ouvrage, ou bien des dates chinoises/japonaises).
+2. **Éditeur XML :** il n'y a pas d'éditeur parfait, donc j'en ai pris un qui est pas mal et je l'ai amélioré selon ma propre vision de nos besoins. Veuillez l'installer en suivant les instructions pour votre système d'exploitation ici. 
+3. **Plan B :** [XMLmind](https://www.xmlmind.com/products_fr.html), au cas où le mien bogue.
+4. **Éditeur de texte brut avec expressions régulières :** gedit (Linux), [Notepad++](https://notepad-plus-plus.org/) (Windows), CotEditor (macOS)
+5. **Clé API :** créez un compte gratuit chez [Groq](https://console.groq.com/) (≠ Groc), puis ouvre le truc dans le coin droit supérieur, créez une clé API, la notez, et l'entrez dans le panneau de configuration de l'éditeur XML:
 
 ```
 Base URL: https://api.groq.com/openai/v1
@@ -18,24 +12,8 @@ API key: [votre clé API]
 Model: qwen/qwen3.6-27b
 ```
 
-Pour éviter toute perte de temps inutile le jour du workshop, STP installer les logiciels en amont, configure les (nom, langue, clé api, compte GitHub)
-
 ---
-# 1. Objectifs et stratégie
-
-Vous avez été spécialement invité à cet atelier, car vous m'avez parlé d'un projet cette année qui implique directement ou indirectement le XML, que vous en êtes conscient ou pas. Je connais votre projet, vous êtes motivé pour l'avancer, et j'ai conçu cette séance et l'outil principal même en fonction de vos besoins individuels.   
-
-En outre, cet atelier part des principes suivants :
-
-- Repères : on va commencer à partir d'un flux de travail traditionnel dans l'histoire de l'Asie ancienne.
-- Efficacité : on va légèrement modifier celui-ci afin de faire « d'une pierre deux coups », même si l'on ne comprend rien de ce que l'on fait.
-- Récompenses concrètes et immédiates, pour vous montrer ce que cela _peut donner_ avec un vrai corpus et des questions de recherche bien formulées. 
-- La pratique avant la théorie : on fait, on maîtrise, puis on pose des questions.
-
-Dans l'esprit de l'efficacité (et des récompenses), vous allez jouer un double-rôle de bêta-testeur. Si vous rencontrez des bugs ou repérez une fonctionnalité manquante, vous allez me faire signe, que ça soit à l'orale, par mail ou, encore mieux, en laissant une notice d'[Issue](https://github.com/lejeanbaptiste/lejeanbaptiste/issues) sur GitHub. Ce dernier est le plus facile pour moi et augmente le profil numérique de tout le monde.
-
----
-# 2. Introduction au XML
+# 1. Introduction au XML
 
 **Qu'est-ce que c'est le XML ?** Le [XML](https://fr.wikipedia.org/wiki/Extensible_Markup_Language) (_eXtensible Markup Language_) est un langage informatique dont la but est la **structuration des données** afin de pouvoir les naviguer, extraire et transformer de manière rapide et reproducible. Il utilise des « balises » (par ex., `<p></p>` = paragraphe) pour identifier des « éléments » qui s'emboîte dans une arborescence. Voici un exemple :
 
@@ -75,7 +53,7 @@ En tant que « chercheur traditionnel », notre métier est l'écriture, et notr
 Le XML, le TEI, le XPath, les _regex_... il est effectivement impossible de poser de bonnes questions à un corpus XML sans comprendre un peu les langages, les outils et le cadre conceptuel de l'informatique, mais on va le faire au fur et à mesure dans le contexte d'un flux de travail traditionnel légèrement modifié.
 
 ---
-# 3. Préparation et traduction d'une source primaire « à la ancienne »
+# 2. Préparation et traduction d'une source primaire « à la ancienne »
 
 ## Pratique traditionnelle
 
@@ -122,9 +100,11 @@ Essayez le suivant pour vous habituer à l'interface :
 - [ ] Ouvrir « Find and replace » (panel gauche, `ctrl/cmd+f`) pour chercher des mots clés dans la source primaire et dans vos traductions.
 - [ ] Faire quelques minutes de vrai travail dedans.
 
+Surtout, faites-moi signe s'il y a un bug ou une fonctionnalité manquante : c'est en version bêta, et vous jouez le double-rôle de bêta-testeur.
+
 ---
 
-# 4. Styles et la surbrillance utile
+# 3. Styles et la surbrillance utile
 
 ## Pratique traditionnelle 
 
@@ -147,17 +127,17 @@ Par contre, ce n'est pas la vraie utilité de cette démarche : si l'on balise d
 
 ## Devoirs
 
-- [ ] Baliser d'autre `persName`.
-- [ ] Cliquer sur `Show tags` pour une aperçu de vos balises.
-- [ ] Basculer entre les vues `Visual` et `Source` pour voir le vrai code que l'éditeur vous permets d'écrire sans tapper tous les `</>` sans faute.
-- [ ] Ouvrir le panneau « Validation » pour voir s'il y a des erreurs dans votre code. Il n'y en a pas ? C'est parce que la mode `Visual` vous empêche de faire des bêtises.
-- [ ] Ouvrir le panneau « Markup » pour découvrir l'arborescence dont j'ai parlé. Essayez de naviguer dedans.
-- [ ] Cliquez sur des choses dans la source primaire et voyez que vous vous déplacez dans l'arborescence. 
-- [ ] Regardez aussi **l'adresse Xpath** (par ex. `TEI/text/body/div/p/persName`) affiché juste au-dessus de la source primaire – voici où se trouve l'élément sélectionné dans l'arborescence.  
+- Baliser d'autre `persName`.
+- Cliquer sur `Show tags` pour une aperçu de vos balises.
+- Basculer entre les vues `Visual` et `Source` pour voir le vrai code que l'éditeur vous permets d'écrire sans tapper tous les `</>` sans faute.
+- Ouvrir le panneau « Validation » pour voir s'il y a des erreurs dans votre code. Il n'y en a pas ? C'est parce que la mode `Visual` vous empêche de faire des bêtises.
+- Ouvrir le panneau « Markup » pour découvrir l'arborescence dont j'ai parlé. Essayez de naviguer dedans.
+- Cliquez sur des choses dans la source primaire et voyez que vous vous déplacez dans l'arborescence. 
+- Regardez aussi **l'adresse Xpath** (par ex. `TEI/text/body/div/p/persName`) affiché juste au-dessus de la source primaire – voici où se trouve l'élément sélectionné dans l'arborescence.  
 
 ---
 
-# 5. Balisage : allez vite, 差不多就行了
+# 4. Balisage : allez vite, 差不多就行了
 
 ## Pratique traditionnelle
 
@@ -238,14 +218,14 @@ C'est après avoir validé les résultats du processus automatisé que l'on se m
 
 ## Devoirs
 
-- [ ] Essayer `Maj.+Entrée`, `Maj.+Retour arrière` lors du balisage manuel et de la validation.
-- [ ] Repérer une configuration qui est exploitable par _regex_ et demander à une IA les deux lignes de code nécessaire pour baliser l'élément concerné.
-- [ ] Essayer les différentes options et le filtrage dans `Auto-tagging`
-- [ ] Voir comment l'IA se débrouille avec les noms propres cachés dans votre texte.
-- [ ] Valider les résultats.
+- Essayer `Maj.+Entrée`, `Maj.+Retour arrière` lors du balisage manuel et de la validation.
+- Repérer une configuration qui est exploitable par _regex_ et demander à une IA les deux lignes de code nécessaire pour baliser l'élément concerné.
+- Essayer les différentes options et le filtrage dans `Auto-tagging`
+- Voir comment l'IA se débrouille avec les noms propres cachés dans votre texte.
+- Valider les résultats.
 
 ---
-# 6. Exploitation de vos données structurées
+# 5. Exploitation de vos données structurées
 
 ## XPath : le langage pour naviguer dans votre base de données 
 
@@ -275,10 +255,8 @@ Extraction: list of strings, count of strings. (I can't do collab for this, righ
 Problem: we've only got strings, these are just words, one or more might refer to the same person...
 Lesson: we don't know who's who, and the data doesn't necessarily mean anything.
 
-(scripts: lists of tagged strings; groupby() list of tagged strings with counts; longest tagged strings; number of strings per paragraph, in bar chart form...)
-
 ---
-# 7. Désambiguïsation
+# 6. Désambiguïsation
 
 ## Théorie 
 
@@ -326,20 +304,10 @@ Quel attribut et pourquoi ? Je ne peut pas dire : ça dépend de vos intérêts.
 - [ ] Avec une balise non-désambiguïsée, lancer une recherche et l'identifie avec une entité dans l'une des autorités.
 - [ ] Essayer l'outil `Disambiguate` pour le faire en masse.
 - [ ] Consulter les entités dans votre base de données dans le panel `Entities`. 
-- [ ] Ouvrir l'une des entrées, modifier les contenus et ajouter quelques noms, une transliteration, etc. 
+- [ ] Ouvrir l'une des entrées, modifier les contenus et  
 
-# 8. Exploitation des données désambiguïsées
+Attributes, this again is slow, and To deal with that, you give each an identifier... this is a relational database, like CBDB, DILA, But you don't have a relational database, right? LJB set one up for you!
 
-(scripts: lists of concrete entities; timeline of people based on their dates; map of places, using latitude and longitude; Summary of main characters with wiki descriptions and links... exporting a table of things, raw; integration into something?)
-# 9. Stockage, sauvegarde et versioning des fichiers
+Disambiguation...
 
-(Contents: keeping local copies, avoid dicking with the translation and entities files... synchronise over cloud; also, GitHub; making time machine backups; GitHub for versioning... )
-
-# 11. Je l'ai cassé, que faire ?
-
-(Contents: revisit the stuff in xml; how to break xml and the validator; the stuff that connects your text to entities.xml and the translations, and how not to break that).
-
-# 10. Autonomie : questionnement et excecution
-
-(Structuring what tags you need and how they should work together; modifying the schema to allow this; documentation)
-
+Schemas - thinking up what you want to track.

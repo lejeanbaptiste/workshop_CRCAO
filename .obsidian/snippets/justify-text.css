@@ -1,0 +1,9 @@
+/* Justify all text in the editor */
+.cm-content {
+    text-align: justify;
+}
+
+/* Justify text in reading mode */
+.markdown-preview-view {
+    text-align: justify;
+}

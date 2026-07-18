@@ -6,3 +6,6 @@ outputs/
 data/private/
 .DS_Store
 
+# Personal contact notes; never commit these files.
+/Invitees.md
+/invitees.md
