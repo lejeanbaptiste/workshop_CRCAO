@@ -232,9 +232,9 @@ def update_05(nb: dict) -> dict:
 def main() -> None:
     updates = {
         "00_a_preparer.ipynb": update_00,
-        "03_preparer_traduire.ipynb": update_03,
-        "04_styles_surbrillance.ipynb": update_04,
-        "05_balisage_rapide.ipynb": update_05,
+        "part-1-les-bases/03_preparer_traduire.ipynb": update_03,
+        "part-1-les-bases/04_styles_surbrillance.ipynb": update_04,
+        "part-1-les-bases/05_balisage_rapide.ipynb": update_05,
     }
     for name, fn in updates.items():
         path = ROOT / name

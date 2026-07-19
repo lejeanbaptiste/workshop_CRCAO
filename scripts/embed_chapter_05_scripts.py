@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 
 
-NOTEBOOK = Path("Workshop/notebooks/course/05_balisage_rapide.ipynb")
+NOTEBOOK = Path("Workshop/notebooks/course/part-1-les-bases/05_balisage_rapide.ipynb")
 
 
 def code_cell(source: str) -> dict:

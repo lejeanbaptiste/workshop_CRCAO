@@ -14,10 +14,15 @@ from bs4 import BeautifulSoup
 
 
 def setup_scripts_path() -> None:
-    """Make the scripts/ folder importable from notebooks/course/."""
+    """Make the scripts/ folder importable from course notebooks."""
     scripts_dir = next(
         candidate
-        for candidate in (Path("scripts"), Path("../scripts"), Path("../../scripts"))
+        for candidate in (
+            Path("scripts"),
+            Path("../scripts"),
+            Path("../../scripts"),
+            Path("../../../scripts"),
+        )
         if candidate.exists()
     )
     resolved = str(scripts_dir.resolve())
@@ -152,8 +157,11 @@ def find_titles_corpus_dir() -> Path:
         Path("outputs/chapter-05/titles-demo"),
         Path("../outputs/chapter-05/titles-demo"),
         Path("../../outputs/chapter-05/titles-demo"),
+        Path("../../../outputs/chapter-05/titles-demo"),
         Path("data/taiping-yulan-titles"),
         Path("../data/taiping-yulan-titles"),
+        Path("../../data/taiping-yulan-titles"),
+        Path("../../../data/taiping-yulan-titles"),
     ]
     for candidate in candidates:
         if candidate.exists() and any(candidate.glob("*.xml")):

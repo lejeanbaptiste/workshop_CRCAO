@@ -53,7 +53,11 @@ Ils ne modifient jamais le fichier source.
 
 - `course.md` — texte pédagogique de l'atelier.
 - `notebooks/` — parcours Jupyter pour les étudiants.
-- `notebooks/course/` — une page Jupyter par section du support, principalement en Markdown ; les pages 6 et 8 contiennent les seules cellules Python du parcours.
+- `notebooks/course/` — parcours Jupyter par chapitre :
+  - **racine** — `00_a_preparer`, `01_objectifs_et_strategie` ;
+  - **`part-1-les-bases/`** — chapitres 2 à 8 (XML, balisage, analyses, entités) ;
+  - **`part-2-preparation-pour-votre-projet/`** — chapitres 9 à 11.
+  Les chapitres 6 et 8 contiennent les principales cellules Python du parcours.
 - `scripts/` — analyses réutilisables en ligne de commande.
 - `data/` — place pour des exemples XML anonymisés ou librement redistribuables.
 - `outputs/` — résultats générés localement, ignorés par Git.

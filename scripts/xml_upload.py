@@ -7,15 +7,35 @@ from pathlib import Path
 import ipywidgets as widgets
 from IPython.display import display
 
-UPLOAD_DIR = Path("data")
+UPLOAD_DIR = Path("data")  # legacy; use _resolve_data_dir()
 XML_PATH: Path | None = None
+
+
+def _resolve_data_dir() -> Path:
+    candidates = (
+        Path("data"),
+        Path("../data"),
+        Path("../../data"),
+        Path("../../../data"),
+    )
+    for candidate in candidates:
+        if candidate.is_dir():
+            return candidate
+    for candidate in candidates:
+        parent = candidate.parent
+        if (parent / "scripts").is_dir() or (parent / "notebooks").is_dir():
+            candidate.mkdir(parents=True, exist_ok=True)
+            return candidate
+    data = Path("data")
+    data.mkdir(exist_ok=True)
+    return data
 
 
 def show_upload() -> None:
     """Display a file upload button and save the XML into the session."""
     global XML_PATH
 
-    UPLOAD_DIR.mkdir(exist_ok=True)
+    data_dir = _resolve_data_dir()
 
     upload = widgets.FileUpload(
         accept=".xml,application/xml,text/xml",
@@ -37,7 +57,7 @@ def show_upload() -> None:
             if hasattr(content, "tobytes"):
                 content = content.tobytes()
 
-            XML_PATH = UPLOAD_DIR / file_info["name"]
+            XML_PATH = data_dir / file_info["name"]
             XML_PATH.write_bytes(content)
             print(f"Fichier enregistré dans votre session : {XML_PATH}")
             print("Vous pouvez maintenant exécuter la cellule suivante.")
@@ -51,8 +71,9 @@ def get_xml_path() -> Path:
     if XML_PATH is not None and XML_PATH.exists():
         return XML_PATH
 
+    data_dir = _resolve_data_dir()
     xml_paths = sorted(
-        UPLOAD_DIR.glob("*.xml"),
+        data_dir.glob("*.xml"),
         key=lambda path: path.stat().st_mtime,
         reverse=True,
     )
