@@ -32,6 +32,9 @@ jobs:
       - name: Build JupyterLite site
         run: jupyter lite build
 
+      - name: Inject workshop CSS
+        run: python scripts/inject_jupyterlite_css.py
+
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:

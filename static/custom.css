@@ -1,0 +1,11 @@
+/* Workshop default: justified markdown text in JupyterLab / JupyterLite. */
+.jp-RenderedHTMLCommon p,
+.jp-RenderedHTMLCommon li,
+.jp-MarkdownOutput p,
+.jp-MarkdownOutput li,
+.rendered_html p,
+.rendered_html li {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
