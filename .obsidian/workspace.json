@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "JBGP.md",
+                "file": "Support textuel.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "JBGP"
+              "title": "Support textuel"
             }
           },
           {
@@ -213,13 +213,19 @@
   },
   "active": "08e496601837aa55",
   "lastOpenFiles": [
-    "Support textuel.md",
-    "data",
-    "jupyter-lite.json",
-    "jupyter_lite_config.json",
-    "requirements-jupyterlite.txt",
-    "Support textuel (conflicted copy 2026-07-17 121405).md",
     "JBGP.md",
+    "notebooks/course/11_reparer.ipynb",
+    "notebooks/course/10_autonomie.ipynb",
+    "notebooks/course/09_stockage_sauvegarde.ipynb",
+    "notebooks/course/08_exploiter_entites.ipynb",
+    "notebooks/course/07_desambiguation.ipynb",
+    "notebooks/course/06_exploiter_donnees.ipynb",
+    "notebooks/course/05_balisage_rapide.ipynb",
+    "notebooks/course/04_styles_surbrillance.ipynb",
+    "notebooks/course/03_preparer_traduire.ipynb",
+    "notebooks/course/02_introduction_xml.ipynb",
+    "Support textuel.md",
+    "Support textuel (conflicted copy 2026-07-17 121405).md",
     "Invitees.md"
   ]
 }
