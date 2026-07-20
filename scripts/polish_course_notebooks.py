@@ -177,10 +177,10 @@ UPDATES: dict[str, dict[int, str]] = {
         - Pour l'importation :
           - soit créez un nouveau document et collez votre transcription dans `Paragraph text`
           - soit importez un document (`File > Import`)
-        - Ouvrez le panneau `Translation` à droite
-        - Cliquez sur le paragraphe qui vous intéresse et tapez votre traduction dans le panneau `Translation`
+        - Ouvrez le panneau **Translation** à droite
+        - Cliquez sur le paragraphe qui vous intéresse et tapez votre traduction dans le panneau **Translation**
 
-        Dans `Translation`, vous pouvez aussi ajouter des notes de bas de page, insérer des références Zotero ou Juris-M, etc. La traduction est liée au paragraphe sélectionné depuis un fichier séparé, ce qui évite de mélanger la source primaire et vos traductions. Vous pouvez donc rattacher plusieurs traductions, dans plusieurs langues, à une seule transcription, les afficher ou les masquer, puis exporter la transcription avec la traduction de votre choix.
+        Dans **Translation**, vous pouvez aussi ajouter des notes de bas de page, insérer des références Zotero ou Juris-M, etc. La traduction est liée au paragraphe sélectionné depuis un fichier séparé, ce qui évite de mélanger la source primaire et vos traductions. Vous pouvez donc rattacher plusieurs traductions, dans plusieurs langues, à une seule transcription, les afficher ou les masquer, puis exporter la transcription avec la traduction de votre choix.
 
         Si vous avez fourni une clé API, vous pouvez aussi générer une première traduction automatiquement. Soyons clairs : la qualité dépend du modèle, et les API gratuites n'offrent pas toujours les meilleurs modèles. En revanche, cela peut déjà aider à lire rapidement une source difficile et à lancer l'interprétation.
 

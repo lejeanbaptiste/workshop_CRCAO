@@ -102,10 +102,10 @@ Nous allons reproduire ce flux de travail dans LJB:
 	- laisser les défauts : central database, Paragraph (1:1)
 - Créer un nouveau document.
 - Coller votre transcription dans « paragraph text ».
-- Ouvrir le panneau « Translation » à droite.
-- Cliquer sur le paragraphe qui vous intéresse et taper une traduction dans le panneau « Translation ».
+- Ouvrir le panneau **Translation** à droite.
+- Cliquer sur le paragraphe qui vous intéresse et taper une traduction dans le panneau **Translation**.
 
-Dans le panneau « Translation », vous pouvez ajouter des notes de bas de page, insérer des références Zotero, etc. Cette traduction est liée au paragraphe mais dans un autre fichier pour que l'on ne mélange pas les deux textes. 
+Dans le panneau **Translation**, vous pouvez ajouter des notes de bas de page, insérer des références Zotero, etc. Cette traduction est liée au paragraphe mais dans un autre fichier pour que l'on ne mélange pas les deux textes. 
 
 Si vous avez fourni une clé API, vous pouvez auto-générer une traduction à retravailler, en sachant que la qualité dépend du modèle, et que les APIs gratuites n'ont pas les meilleurs modèles.
 
