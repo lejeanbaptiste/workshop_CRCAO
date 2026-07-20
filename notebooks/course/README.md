@@ -15,6 +15,6 @@ Chapitres 2 à 8 : XML, balisage, statistiques, désambiguïsation, entités.
 
 ## Partie 2 — Préparation pour votre projet (`part-2-preparation-pour-votre-projet/`)
 
-Chapitres 9 à 11 : stockage, autonomie, réparation.
+Chapitres 9 à 11 : fichiers et sauvegarde (9), validation XML et schéma (10), autonomie (11).
 
 Les ressources partagées (par ex. images) restent dans `notebooks/course/images/`.
