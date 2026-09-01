@@ -60,6 +60,11 @@ Ils ne modifient jamais le fichier source.
   Les chapitres 6 et 8 contiennent les principales cellules Python du parcours.
 - `scripts/` — analyses réutilisables en ligne de commande.
 - `data/` — place pour des exemples XML anonymisés ou librement redistribuables.
+  Les dossiers `taiping-yulan-full/` et `taiping-yulan-raw/` contiennent
+  respectivement le corpus déjà balisé pour le chapitre 6 et sa copie brute
+  pour l'exercice regex du chapitre 5. Ils sont préparés par
+  `scripts/download_taiping_yulan.py` et
+  `scripts/prepare_taiping_yulan_raw.py`.
 - `outputs/` — résultats générés localement, ignorés par Git.
 
 Le site JupyterLite est construit automatiquement par GitHub Actions à chaque

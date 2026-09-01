@@ -26,15 +26,15 @@ cells = [
     md(
         """# 8. Exploitation des données désambiguïsées
 
-Au chapitre 7, vous avez relié des formes de surface à des entités stables (`@key`) et à votre fichier `entities.xml`. Ce chapitre montre **pourquoi** ce travail compte : d'abord en vérifiant que rien n'a « fuité » (mentions balisées mais pas désambiguïsées), puis en produisant des tableaux et graphiques impossibles à obtenir en comptant seulement des chaînes de caractères.
+Au chapitre 7, vous avez relié des formes de surface à des entités stables (`@key`) et à votre base SQLite. Ce chapitre montre **pourquoi** ce travail compte : d'abord en vérifiant que rien n'a « fuité » (mentions balisées mais pas désambiguïsées), puis en produisant des tableaux et graphiques impossibles à obtenir en comptant seulement des chaînes de caractères.
 
-Comme au chapitre 6, tout s'exécute dans cette page JupyterLite. Téléversez votre transcription XML balisée ci-dessous. Placez aussi `entities.xml` dans le dossier `data/` de la session (même dossier que le texte, ou `data/entities.xml`).
+Comme au chapitre 6, tout s'exécute dans cette page JupyterLite. Téléversez votre transcription XML balisée et votre base SQLite ci-dessous.
 
 Les résultats doivent toujours pouvoir être **ramenés aux passages sources** dans l'éditeur : ce sont des outils de contrôle et d'argumentation, pas une vérité automatique.
 """
     ),
     code(
-        """%pip install -q ipywidgets lxml pandas matplotlib
+        """%pip install -q --disable-pip-version-check ipywidgets lxml pandas matplotlib tqdm
 
 from pathlib import Path
 import sys
@@ -111,7 +111,7 @@ display(by_key)
     md(
         """## Exemple 3 : Personnages dans la base et dans le texte
 
-On croise **`entities.xml`** (toutes les personnes que vous avez préparées) avec les mentions **@key** du texte. La colonne `formes_dans_le_texte` liste chaque variante et son effectif. Les lignes à **0 mention** ne sont pas une erreur : elles signalent des entités prêtes pour le projet mais absentes de ce fichier (ou pas encore citées).
+On croise la **base SQLite** (toutes les personnes que vous avez préparées) avec les mentions **@key** du texte. La colonne `formes_dans_le_texte` liste chaque variante et son effectif. Les lignes à **0 mention** ne sont pas une erreur : elles signalent des entités prêtes pour le projet mais absentes de ce fichier (ou pas encore citées).
 """
     ),
     code(
@@ -120,7 +120,7 @@ On croise **`entities.xml`** (toutes les personnes que vous avez préparées) av
 from chapter_08_analyses import person_registry_table
 
 if ENTITIES_PATH is None:
-    print("Ajoutez entities.xml dans data/ pour afficher ce tableau.")
+    print("Ajoutez la base SQLite dans data/ pour afficher ce tableau.")
 else:
     registry_df = person_registry_table(XML_PATH, ENTITIES_PATH, entity_type="person")
     display(registry_df)
@@ -129,7 +129,7 @@ else:
     md(
         """## Exemple 4 : Personnages dans le temps
 
-Pour chaque personne dans **`entities.xml`**, on calcule une **position biographique** : la moyenne des années de naissance et de décès lorsque les deux sont connues, sinon l'unique date disponible. L'axe horizontal du graphique regroupe ainsi les personnages dans le temps ; l'axe vertical compte leurs mentions désambiguïsées dans **votre** texte.
+Pour chaque personne dans la **base SQLite**, on calcule une **position biographique** : la moyenne des années de naissance et de décès lorsque les deux sont connues, sinon l'unique date disponible. L'axe horizontal du graphique regroupe ainsi les personnages dans le temps ; l'axe vertical compte leurs mentions désambiguïsées dans **votre** texte.
 
 La **ligne verticale** indique la date du document, lue dans les métadonnées TEI (`teiHeader`, balises `<date when="…">`). Elle permet de situer d'un coup d'œil si le texte traite surtout de contemporains, d'ancêtres, etc. Si aucune date n'est trouvée dans l'en-tête, le graphique s'affiche sans cette ligne — vérifiez alors le balisage des métadonnées dans l'éditeur.
 """
@@ -144,7 +144,7 @@ from chapter_08_analyses import (
 )
 
 if ENTITIES_PATH is None:
-    print("Ajoutez entities.xml dans data/ pour cette analyse.")
+    print("Ajoutez la base SQLite dans data/ pour cette analyse.")
 else:
     life_df = person_life_timeline_table(XML_PATH, ENTITIES_PATH)
     display(life_df[["label", "birth_year", "death_year", "mean_life_year", "mentions"]])
@@ -162,8 +162,8 @@ else:
         """## Prolongements
 
 - **Lieux** : reprenez `person_registry_table(..., entity_type=\"place\")` ; les coordonnées peuvent être exportées en KML pour Google Earth.
-- **Site de lecture** : votre TEI + `entities.xml` suffisent pour générer une page HTML (plan du texte à gauche, liens `@ref` vers les autorités) — voir le chapitre 10 pour l'autonomie sur ce type de livrable.
-- **Ligne de commande** : `python scripts/chapter_08_entities.py votre-texte.xml --entities entities.xml --output-dir outputs/chapter-08` exporte les CSV.
+- **Site de lecture** : votre TEI + base SQLite suffisent pour générer une page HTML (plan du texte à gauche, liens `@ref` vers les autorités) — voir le chapitre 10 pour l'autonomie sur ce type de livrable.
+- **Ligne de commande** : `python scripts/chapter_08_entities.py votre-texte.xml --entities entities.sqlite --output-dir outputs/chapter-08` exporte les CSV.
 
 ## Exercices
 

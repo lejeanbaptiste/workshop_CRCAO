@@ -99,7 +99,7 @@ Nous allons reproduire ce flux de travail dans LJB:
 - Dans `Project settings`:
 	- choisir la langue de vos sources primaires
 	- choisir la langue de vos traductions
-	- laisser les défauts : central database, Paragraph (1:1)
+	- laisser les défauts : central database[^ljb-db], Paragraph (1:1)
 - Créer un nouveau document.
 - Coller votre transcription dans « paragraph text ».
 - Ouvrir le panneau **Translation** à droite.
@@ -296,7 +296,9 @@ Pour nous assurer que nous ne nous trompions pas avec les numéros, on a besoin 
 
 Sur la question de _l'autorité_, il y a ce que l'on appelle des « autorités », comme le [Buddhist Studies Authority Database Project](https://authority.dila.edu.tw/), qui sont énormes, fiables et répandues. Que ça soit le National Diet Library, le Chinese Biographical Database ou bien Wikipédia, il n'y a par contre aucune autorité qui est _complète_, et chacune a ses propres identifiants. En plus, ce n'est pas comme si vous aller ajouter une page Wikipédia pour chaque nouveau personage historique sur lequel vous tombez juste pour avoir un identifiant à lui attribuer... 
 
-Pour vous dépanner, notre éditeur XML crée une petite base de données relationnelle dans le fichier `entities.xml` qui sert à quatre choses : 
+Pour vous dépanner, notre éditeur XML crée une petite base de données relationnelle dans une base SQLite qui sert à quatre choses :
+
+[^ljb-db]: La base **locale** est le fichier SQLite associé à votre projet : elle est portable, sauvegardable et peut être travaillée hors connexion. La base **centrale** est partagée par LJB entre plusieurs projets ou utilisateurs ; elle facilite la réutilisation des identifiants et des autorités, mais ses modifications peuvent être synchronisées ou entrer en conflit avec la copie locale. Dans le doute, ne remplacez pas une base par l'autre : utilisez les fonctions de synchronisation de LJB.
 
 - Attribuer à chaque entité que vous créez un identifiant unique.
 - Regrouper les « chaînes de caractères » ou « formes de surface » qui lui appartiennent afin de faciliter le balisage.
@@ -337,9 +339,8 @@ Quel attribut et pourquoi ? Je ne peut pas dire : ça dépend de vos intérêts.
 
 # 11. Je l'ai cassé, que faire ?
 
-(Contents: revisit the stuff in xml; how to break xml and the validator; the stuff that connects your text to entities.xml and the translations, and how not to break that).
+(Contents: revisit the stuff in xml; how to break xml and the validator; the stuff that connects your text to the SQLite database and the translations, and how not to break that).
 
 # 10. Autonomie : questionnement et excecution
 
 (Structuring what tags you need and how they should work together; modifying the schema to allow this; documentation)
-

@@ -8,3 +8,4 @@ lxml
 pandas
 matplotlib
 networkx
+tqdm

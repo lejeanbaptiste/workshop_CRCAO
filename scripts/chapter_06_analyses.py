@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
 from bs4 import BeautifulSoup
+from matplotlib import font_manager
 
 
 def setup_scripts_path() -> None:
@@ -39,6 +40,27 @@ def local_name(tag: str) -> str:
     return tag.rsplit("}", 1)[-1]
 
 
+def configure_cjk_font() -> str | None:
+    """Select an installed font with Chinese glyphs when one is available."""
+    preferred = (
+        "Noto Sans CJK SC",
+        "Noto Sans CJK TC",
+        "PingFang SC",
+        "PingFang TC",
+        "Songti SC",
+        "Microsoft YaHei",
+        "Arial Unicode MS",
+        "WenQuanYi Zen Hei",
+    )
+    available = {font.name for font in font_manager.fontManager.ttflist}
+    for name in preferred:
+        if name in available:
+            plt.rcParams["font.family"] = name
+            plt.rcParams["font.sans-serif"] = [name]
+            return name
+    return None
+
+
 def tagged_records(soup: BeautifulSoup) -> pd.DataFrame:
     """Collect every tagged element inside a paragraph (XPath: //p//*)."""
     rows: list[dict[str, object]] = []
@@ -50,7 +72,7 @@ def tagged_records(soup: BeautifulSoup) -> pd.DataFrame:
             rows.append(
                 {
                     "paragraph": paragraph_number,
-                    "tag": local_name(node.tag),
+                    "tag": local_name(node.name),
                     "value": value,
                 }
             )
@@ -130,6 +152,12 @@ def plot_cooccurrence_network(
         print("Aucune cooccurrence dans un même paragraphe.")
         return
 
+    if configure_cjk_font() is None:
+        print(
+            "Aucune police CJK installée : les étiquettes chinoises peuvent "
+            "ne pas s'afficher. Installez Noto Sans CJK ou PingFang."
+        )
+
     if graph.number_of_nodes() > max_nodes:
         keep_nodes = sorted(
             graph.nodes,
@@ -158,6 +186,10 @@ def find_titles_corpus_dir() -> Path:
         Path("../outputs/chapter-05/titles-demo"),
         Path("../../outputs/chapter-05/titles-demo"),
         Path("../../../outputs/chapter-05/titles-demo"),
+        Path("data/taiping-yulan-full"),
+        Path("../data/taiping-yulan-full"),
+        Path("../../data/taiping-yulan-full"),
+        Path("../../../data/taiping-yulan-full"),
         Path("data/taiping-yulan-titles"),
         Path("../data/taiping-yulan-titles"),
         Path("../../data/taiping-yulan-titles"),

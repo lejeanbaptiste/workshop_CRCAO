@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import sqlite3
 import sys
 from collections import Counter
 from pathlib import Path
@@ -59,12 +60,12 @@ def _data_candidates() -> tuple[Path, ...]:
 
 
 def resolve_entities_path(xml_path: Path | None = None) -> Path | None:
-    """Find entities.xml next to the TEI file or in data/."""
+    """Find the LJB SQLite entity database next to the TEI file or in data/."""
     candidates: list[Path] = []
     if xml_path is not None:
-        candidates.append(xml_path.parent / "entities.xml")
+        candidates.append(xml_path.parent / "entities.sqlite")
     for base in _data_candidates():
-        candidates.append(base / "entities.xml")
+        candidates.append(base / "entities.sqlite")
     for path in candidates:
         if path.is_file():
             return path
@@ -189,51 +190,46 @@ def leakage_inconsistent_surfaces(xml_path: Path, top_n: int = 15) -> pd.DataFra
 
 
 def load_entity_registry(entities_path: Path) -> pd.DataFrame:
-    """Parse TEI standOff listPerson / listPlace into a flat registry."""
+    """Load LJB entities from SQLite into a flat registry."""
     return load_entity_registry_clean(entities_path)
 
 
 def load_entity_registry_clean(entities_path: Path) -> pd.DataFrame:
-    root = load_root(entities_path)
     records: list[dict[str, Any]] = []
+    with sqlite3.connect(entities_path) as connection:
+        entities = connection.execute(
+            "SELECT id, kind, description FROM entities WHERE deleted_at IS NULL"
+        ).fetchall()
+        names = connection.execute(
+            "SELECT entity_id, text FROM entity_names "
+            "WHERE status = 'active' ORDER BY is_primary DESC, id"
+        ).fetchall()
+        dates = connection.execute(
+            "SELECT entity_id, date_kind, start_year FROM entity_dates "
+            "WHERE status = 'active' AND date_kind IN ('birth', 'death') "
+            "ORDER BY id"
+        ).fetchall()
 
-    for element in root.iter():
-        tag = local_name(element.tag)
-        if tag == "person":
-            key = element.get("{http://www.w3.org/XML/1998/namespace}id") or element.get("id")
-            if not key:
-                continue
-            names = [text_of(n) for n in element if local_name(n.tag) == "persName" and text_of(n)]
-            label = names[0] if names else key
-            birth, death = _fix_load_entity_registry_birth_death(element)
-            records.append(
-                {
-                    "key": key,
-                    "entity_type": "person",
-                    "label": label,
-                    "birth_year": birth,
-                    "death_year": death,
-                    "alt_names": "; ".join(names[1:]) if len(names) > 1 else "",
-                }
-            )
-        elif tag == "place":
-            key = element.get("{http://www.w3.org/XML/1998/namespace}id") or element.get("id")
-            if not key:
-                continue
-            names = [text_of(n) for n in element if local_name(n.tag) == "placeName" and text_of(n)]
-            label = names[0] if names else key
-            geo_el = element.find(".//{*}geo")
-            geo = text_of(geo_el) if geo_el is not None else ""
-            records.append(
-                {
-                    "key": key,
-                    "entity_type": "place",
-                    "label": label,
-                    "birth_year": None,
-                    "death_year": None,
-                    "alt_names": geo,
-                }
-            )
+    names_by_id: dict[str, list[str]] = {}
+    for entity_id, name in names:
+        names_by_id.setdefault(entity_id, []).append(name)
+    dates_by_id: dict[str, dict[str, float | None]] = {}
+    for entity_id, date_kind, year in dates:
+        dates_by_id.setdefault(entity_id, {})[date_kind] = float(year) if year is not None else None
+
+    for key, kind, description in entities:
+        entity_names = names_by_id.get(key, [])
+        entity_dates = dates_by_id.get(key, {})
+        records.append(
+            {
+                "key": key,
+                "entity_type": kind,
+                "label": entity_names[0] if entity_names else (description or key),
+                "birth_year": entity_dates.get("birth"),
+                "death_year": entity_dates.get("death"),
+                "alt_names": "; ".join(entity_names[1:]),
+            }
+        )
 
     if not records:
         return pd.DataFrame(
@@ -309,7 +305,7 @@ def tei_document_year(xml_path: Path) -> float | None:
 
 
 def person_life_timeline_table(xml_path: Path, entities_path: Path) -> pd.DataFrame:
-    """Persons from entities.xml with a biographical year and mention counts from the text."""
+    """Persons from SQLite with a biographical year and mention counts from the text."""
     base = person_registry_table(xml_path, entities_path, entity_type="person")
     if base.empty:
         return base
@@ -341,7 +337,7 @@ def plot_person_life_grouping(
         ax.text(
             0.5,
             0.5,
-            "Aucune date biographique dans entities.xml",
+            "Aucune date biographique dans la base SQLite",
             ha="center",
             va="center",
         )
@@ -377,7 +373,7 @@ def plot_person_life_grouping(
         ax.legend(loc="upper right")
     ax.set_xlabel("Position biographique (moyenne naissance–décès, ou date unique)")
     ax.set_ylabel("Mentions dans le texte (@key)")
-    ax.set_title("Personnages dans le temps (d'après entities.xml)")
+    ax.set_title("Personnages dans le temps (d'après la base SQLite)")
     ax.grid(True, alpha=0.3)
     fig.tight_layout()
     return fig

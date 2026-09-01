@@ -53,7 +53,13 @@ def analyse(xml_path: Path) -> list[dict[str, str]]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("xml", type=Path, help="XML/TEI file with @key attributes")
-    parser.add_argument("--entities", type=Path, help="entities.xml (optional)")
+    parser.add_argument(
+        "--database",
+        "--entities",
+        dest="database",
+        type=Path,
+        help="LJB SQLite database (optional; --entities kept as a compatibility alias)",
+    )
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/chapter-08"))
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -81,8 +87,8 @@ def main() -> None:
         writer.writeheader()
         writer.writerows(summary)
     leakage_summary(args.xml).to_csv(args.output_dir / "leakage_summary.csv", index=False)
-    if args.entities and args.entities.is_file():
-        person_registry_table(args.xml, args.entities).to_csv(
+    if args.database and args.database.is_file():
+        person_registry_table(args.xml, args.database).to_csv(
             args.output_dir / "person_registry.csv", index=False
         )
     write_chart(args.output_dir, summary)

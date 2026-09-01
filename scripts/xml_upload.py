@@ -9,6 +9,7 @@ from IPython.display import display
 
 UPLOAD_DIR = Path("data")  # legacy; use _resolve_data_dir()
 XML_PATH: Path | None = None
+ENTITY_DB_PATH: Path | None = None
 
 
 def _resolve_data_dir() -> Path:
@@ -60,6 +61,38 @@ def show_upload() -> None:
             XML_PATH = data_dir / file_info["name"]
             XML_PATH.write_bytes(content)
             print(f"Fichier enregistré dans votre session : {XML_PATH}")
+            print("Vous pouvez maintenant exécuter la cellule suivante.")
+
+    upload.observe(save_uploaded_file, names="value")
+    display(widgets.VBox([upload, status]))
+
+
+def show_entity_db_upload() -> None:
+    """Display a button for uploading the LJB SQLite entity database."""
+    global ENTITY_DB_PATH
+
+    data_dir = _resolve_data_dir()
+    upload = widgets.FileUpload(
+        accept=".sqlite,.sqlite3,.db,application/vnd.sqlite3",
+        multiple=False,
+        description="Choisir la base SQLite",
+        button_style="primary",
+    )
+    status = widgets.Output()
+
+    def save_uploaded_file(change):
+        global ENTITY_DB_PATH
+        with status:
+            status.clear_output()
+            if not upload.value:
+                return
+            file_info = upload.value[0]
+            content = file_info["content"]
+            if hasattr(content, "tobytes"):
+                content = content.tobytes()
+            ENTITY_DB_PATH = data_dir / file_info["name"]
+            ENTITY_DB_PATH.write_bytes(content)
+            print(f"Base SQLite enregistrée dans votre session : {ENTITY_DB_PATH}")
             print("Vous pouvez maintenant exécuter la cellule suivante.")
 
     upload.observe(save_uploaded_file, names="value")
