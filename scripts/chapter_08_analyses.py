@@ -330,6 +330,28 @@ def plot_person_life_grouping(
 ) -> "plt.Figure":
     """Scatter: biographical mean year vs mention count; vertical line = text metadata date."""
     import matplotlib.pyplot as plt
+    from matplotlib import font_manager
+
+    preferred_fonts = (
+        "Noto Sans CJK SC",
+        "Noto Sans CJK TC",
+        "PingFang SC",
+        "PingFang TC",
+        "Songti SC",
+        "Microsoft YaHei",
+        "Arial Unicode MS",
+        "WenQuanYi Zen Hei",
+    )
+    available_fonts = {font.name for font in font_manager.fontManager.ttflist}
+    cjk_font = next((name for name in preferred_fonts if name in available_fonts), None)
+    if cjk_font:
+        plt.rcParams["font.family"] = cjk_font
+        plt.rcParams["font.sans-serif"] = [cjk_font]
+    else:
+        print(
+            "Aucune police CJK installée : les étiquettes peuvent ne pas "
+            "s'afficher. Installez Noto Sans CJK ou PingFang."
+        )
 
     subset = life_df.dropna(subset=["mean_life_year"])
     fig, ax = plt.subplots(figsize=figsize)
@@ -379,8 +401,12 @@ def plot_person_life_grouping(
     return fig
 
 
-def before_after_top_names(xml_path: Path, top_n: int = 10) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Compare persName counts by surface string vs by @key."""
+def before_after_top_names(
+    xml_path: Path,
+    database_path: Path | None = None,
+    top_n: int = 10,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Compare persName counts by surface string vs keyed canonical names."""
     rows = all_name_records(xml_path)
     pers = [r for r in rows if r["tag"] == "persName"]
     by_surface = Counter(r["surface_form"] for r in pers)
@@ -388,5 +414,14 @@ def before_after_top_names(xml_path: Path, top_n: int = 10) -> tuple[pd.DataFram
     surface_df = pd.DataFrame(
         [{"surface_form": k, "mentions": v} for k, v in by_surface.most_common(top_n)]
     )
-    key_df = pd.DataFrame([{"key": k, "mentions": v} for k, v in by_key.most_common(top_n)])
+    key_rows = [{"key": k, "mentions": v} for k, v in by_key.most_common(top_n)]
+    key_df = pd.DataFrame(key_rows)
+    if not key_df.empty and database_path and database_path.is_file():
+        registry = load_entity_registry_clean(database_path)
+        labels = registry.loc[registry["entity_type"] == "person", ["key", "label"]]
+        key_df = key_df.merge(labels, on="key", how="left")
+        key_df["canonical_name"] = key_df["label"].fillna(key_df["key"])
+        key_df = key_df.drop(columns=["label"])
+    elif not key_df.empty:
+        key_df["canonical_name"] = key_df["key"]
     return surface_df, key_df
